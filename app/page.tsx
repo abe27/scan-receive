@@ -32,23 +32,25 @@ export default function Home() {
   const handleKeyDown = (e: React.KeyboardEvent): any => {
     setTxtKey(e.key);
     if (e.key === "Enter") {
-      if (scanList.length == 0) {
-        setTxtPoNo(txtScan);
-      } else if (scanList.length == 1) {
-        setTxtInvNo(txtScan);
-      } else if (scanList.length > 1) {
-        setPartList([
-          ...partList,
-          {
-            id: partList.length + 1,
-            code: txtScan,
-            no: txtScan,
-            name: txtScan,
-            qty: 20,
-          },
-        ]);
+      if (txtScan.length > 0) {
+        if (scanList.length == 0) {
+          setTxtPoNo(txtScan);
+        } else if (scanList.length == 1) {
+          setTxtInvNo(txtScan);
+        } else if (scanList.length > 1) {
+          setPartList([
+            ...partList,
+            {
+              id: partList.length + 1,
+              code: txtScan,
+              no: txtScan,
+              name: txtScan,
+              qty: 20,
+            },
+          ]);
+        }
+        setScanList([...scanList, { id: scanList.length + 1, name: txtScan }]);
       }
-      setScanList([...scanList, { id: scanList.length + 1, name: txtScan }]);
       setTxtScan("");
     }
   };
@@ -72,7 +74,9 @@ export default function Home() {
       <div className="card w-full min-w-full bg-base-100 card-xs shadow-sm">
         <div className="card-body">
           <h2 className="card-title flex justify-between">
-            <div className="justify-start">Receive Invoice {txtKey}</div>
+            <div className="justify-start">
+              Receive Invoice {txtKey == "Unidentified" ? "" : txtKey}
+            </div>
             <div className="justify-end card-actions">
               <button className="btn btn-primary" onClick={clearItem}>
                 Save
