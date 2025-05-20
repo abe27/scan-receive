@@ -1,5 +1,6 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 interface txtScan {
   id: number;
@@ -15,9 +16,11 @@ interface txtPartList {
 }
 
 export default function Home() {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [txtScan, setTxtScan] = useState("");
   const [txtPoNo, setTxtPoNo] = useState("");
   const [txtInvNo, setTxtInvNo] = useState("");
+  const [txtKey, setTxtKey] = useState("");
   const [scanList, setScanList] = useState<txtScan[]>([]);
   const [partList, setPartList] = useState<txtPartList[]>([]);
 
@@ -26,8 +29,8 @@ export default function Home() {
     setTxtScan(e.target.value);
   };
 
-  function handleKeyDown(e: React.KeyboardEvent): any {
-    console.dir(e.key);
+  const handleKeyDown = (e: React.KeyboardEvent): any => {
+    setTxtKey(e.key);
     if (e.key === "Enter") {
       if (scanList.length == 0) {
         setTxtPoNo(txtScan);
@@ -48,16 +51,32 @@ export default function Home() {
       setScanList([...scanList, { id: scanList.length + 1, name: txtScan }]);
       setTxtScan("");
     }
-  }
+  };
+
+  const clearItem = () => {
+    setTxtScan("");
+    setTxtPoNo("");
+    setTxtInvNo("");
+    setScanList([]);
+    setPartList([]);
+    Swal.fire({
+      title: "Successfully!",
+      text: "Save Data Completed.",
+      icon: "success",
+      confirmButtonText: "Ok",
+    }).then(() => window.location.reload());
+  };
 
   return (
     <div className="p-4">
       <div className="card w-full min-w-full bg-base-100 card-xs shadow-sm">
         <div className="card-body">
           <h2 className="card-title flex justify-between">
-            <div className="justify-start">Receive Invoice</div>
+            <div className="justify-start">Receive Invoice {txtKey}</div>
             <div className="justify-end card-actions">
-              <button className="btn btn-primary">Save</button>
+              <button className="btn btn-primary" onClick={clearItem}>
+                Save
+              </button>
             </div>
           </h2>
           <div className="p-4 max-w-full w-full">
@@ -70,6 +89,7 @@ export default function Home() {
               value={txtScan}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
+              ref={inputRef}
             />
             <div className=" max-w-full pt-2">
               <div className="flex justify-between">
