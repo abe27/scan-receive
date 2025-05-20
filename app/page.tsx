@@ -9,6 +9,8 @@ interface txtScan {
 
 interface txtPartList {
   id: number;
+  po: string;
+  inv: string;
   code: string;
   no: string;
   name: string;
@@ -42,6 +44,8 @@ export default function Home() {
             ...partList,
             {
               id: partList.length + 1,
+              po: txtPoNo,
+              inv: txtInvNo,
               code: txtScan,
               no: txtScan,
               name: txtScan,
@@ -56,6 +60,15 @@ export default function Home() {
   };
 
   const clearItem = () => {
+    setTxtScan("");
+    setTxtPoNo("");
+    setTxtInvNo("");
+    setScanList([]);
+    setPartList([]);
+    window.location.reload();
+  };
+
+  const saveItem = () => {
     setTxtScan("");
     setTxtPoNo("");
     setTxtInvNo("");
@@ -78,7 +91,10 @@ export default function Home() {
               Receive Invoice {txtKey == "Unidentified" ? "" : txtKey}
             </div>
             <div className="justify-end card-actions">
-              <button className="btn btn-primary" onClick={clearItem}>
+              <button className="btn btn-error" onClick={clearItem}>
+                Clear
+              </button>
+              <button className="btn btn-primary" onClick={saveItem}>
                 Save
               </button>
             </div>
