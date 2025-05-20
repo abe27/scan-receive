@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, KeyboardEventHandler, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 interface txtScan {
   id: number;
@@ -26,8 +26,8 @@ export default function Home() {
     setTxtScan(e.target.value);
   };
 
-  function handleKeyDown(e: KeyboardEvent) {
-    console.dir(scanList.length);
+  function handleKeyDown(e: React.KeyboardEvent): any {
+    console.dir(e.key);
     if (e.key === "Enter") {
       if (scanList.length == 0) {
         setTxtPoNo(txtScan);
